@@ -71,3 +71,10 @@ export default defineConfig([
   },
 ])
 ```
+# INTEGRAÇAO COM API
+O Footbooxd utiliza a API-Football para obter dados em tempo real de partidas, campeonatos e times.
+## Jogos ao vivo
+
+### Jogos por rodada
+
+## 
