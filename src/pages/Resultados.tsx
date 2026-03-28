@@ -1,0 +1,33 @@
+import { useEffect, useState } from "react";
+import CardJogo from "../components/CardJogo";
+import { buscarResultados } from "../services/apiFootball";
+import type { IJogo } from "../types/IJogo";
+import Headers from "../components/Header";
+
+export default function Resultados() {
+  const [resultados, setResultados] = useState<IJogo[]>([]);
+
+  useEffect(() => {
+    buscarResultados().then(setResultados);
+  }, []);
+
+  return (
+    <>
+    <Headers pageTitle="Resultados" />
+    <main className="container mt-4">
+      <h2 className="mb-4">Todos os Resultados</h2>
+
+      <div className="row">
+        {resultados.map((jogo) => (
+          <div
+            key={jogo.fixture.id}
+            className="col-md-4 mb-3"
+          >
+            <CardJogo jogo={jogo} />
+          </div>
+        ))}
+      </div>
+    </main>
+    </>
+  );
+}

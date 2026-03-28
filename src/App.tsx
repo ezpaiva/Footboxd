@@ -1,17 +1,19 @@
-import { Jogos } from "./pages/jogos";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+import Home from "./pages/Home";
+import Resultados from "./pages/Resultados";
+import AoVivo from "./pages/AoVivo";
+import Proximos from "./pages/Proximos";
+
+export default function App() {
   return (
-    <> 
-    <header className="bg-dark text-white p-3 text-center">
-      <h1>Futebol ao Vivo</h1>
-    </header>
-
-    <main>
-     <Jogos />
-    </main>
-   </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/resultados" element={<Resultados />} />
+        <Route path="/ao-vivo" element={<AoVivo />} />
+        <Route path="/proximos" element={<Proximos />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
-
-export default App
+};
