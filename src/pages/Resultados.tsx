@@ -14,6 +14,7 @@ export default function Resultados() {
   return (
     <>
     <Headers pageTitle="Resultados" />
+    
     <main className="container mt-4">
       <h2 className="mb-4">Todos os Resultados</h2>
 

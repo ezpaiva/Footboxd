@@ -4,6 +4,15 @@ const HEADERS = {
   "x-apisports-key": import.meta.env.VITE_API_FOOTBALL_KEY,
 };
 
+function getFromSessionCache(key: string) {
+  const cached = sessionStorage.getItem(key);
+  return cached ? JSON.parse(cached) : null;
+}
+
+function saveToSessionCache(key: string, data: any) {
+  sessionStorage.setItem(key, JSON.stringify(data));
+}
+
 function formatDate(offset: number) {
   const date = new Date();
   date.setDate(date.getDate() + offset);
@@ -22,21 +31,49 @@ async function fetchApi(endpoint: string) {
     throw new Error("Erro ao acessar dados da API‑Football");
   }
 
-  return data.response;
+  return Array.isArray(data.response) ? data.response : [];
 }
 
-export function buscarResultados() {
-  return fetchApi(`/fixtures?date=${formatDate(-1)}`);
+export async function buscarResultados() {
+  const cacheKey = "resultados";
+  const cached = getFromSessionCache(cacheKey);
+  if (cached) {
+    return cached;
+  }
+  const data = await fetchApi(`/fixtures?date=${formatDate(-1)}`);
+  saveToSessionCache(cacheKey, data);
+  return data;
 }
 
-export function buscarAoVivo() {
-  return fetchApi(`/fixtures?live=all`);
+export async function buscarAoVivo() {
+  const cacheKey = "aoVivo";
+  const cached = getFromSessionCache(cacheKey);
+  if (cached) {
+    return cached;
+  }
+  const data = await fetchApi(`/fixtures?live=all`);
+  saveToSessionCache(cacheKey, data);
+  return data;
 }
 
-export function buscarProximos() {
-  return fetchApi(`/fixtures?date=${formatDate(1)}`);
+export async function buscarProximos() {
+  const cacheKey = "proximos";
+  const cached = getFromSessionCache(cacheKey);
+  if (cached) {
+    return cached;
+  }
+  const data = await fetchApi(`/fixtures?date=${formatDate(1)}`);
+  saveToSessionCache(cacheKey, data);
+  return data;
 }
 
-export function buscarLineup(fixtureId: number) {
-  return fetchApi(`/fixtures/lineups?fixture=${fixtureId}`);
+export async function buscarLineup(fixtureId: number) {
+  const cacheKey = `lineup_${fixtureId}`;
+  const cached = getFromSessionCache(cacheKey);
+  if (cached) {
+    return cached;
+  }
+  const data = await fetchApi(`/fixtures/lineups?fixture=${fixtureId}`);
+  saveToSessionCache(cacheKey, data);
+  return data;
 }

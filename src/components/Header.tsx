@@ -1,14 +1,39 @@
 interface HeaderProps {
-  pageTitle: string;
+  pageTitle?: string;
 }
 
 export default function Header({ pageTitle }: HeaderProps) {
   return (
-    <header className="bg-dark text-white py-3 mb-4">
-      <div className="container text-center">
-        <h1 className="h4 mb-1">FOOTBOXD</h1>
-        <h2 className="h6 text-secondary mb-0">{pageTitle}</h2>
+    <header
+      className="text-center text-white py-5"
+      style={{
+        background: "linear-gradient(180deg, #3a1c93, #160034)",
+        borderBottom: "2px solid #5a2eff",
+      }}
+    >
+      <div className="d-flex justify-content-center align-items-center gap-3">
+        <img
+          src="/favicon.png"
+          alt="Troféu"
+          style={{ width: "55px", height: "55px" }}
+        />
+        <h1 className="fw-bold m-0">FOOTBOXD</h1>
+        <img
+          src="/favicon.png"
+          alt="Troféu"
+          style={{ width: "55px", height: "55px" }}
+        />
       </div>
+
+      <p className="mt-2 text-light opacity-75">
+        Avalie os melhores jogos de futebol
+      </p>
+
+      {pageTitle && (
+        <p className="mt-3 fw-semibold">
+          {pageTitle}
+        </p>
+      )}
     </header>
   );
 }

@@ -1,35 +1,85 @@
-import { useEffect, useState } from "react";
-import { buscarLineup } from "../services/apiFootball";
 import type { IJogador } from "../types/IJogador";
 
 interface Props {
-  fixtureId: number;
+  teamName?: string;
+  jogadores: IJogador[];
+  align: "left" | "right";
 }
 
-export default function Lineup({ fixtureId }: Props) {
-  const [jogadores, setJogadores] = useState<IJogador[]>([]);
+export default function Lineup({
+  teamName,
+  jogadores,
+  align,
+}: Props) {
 
-  useEffect(() => {
-    buscarLineup(fixtureId).then((data) => {
-      const titulares =
-        data[0]?.startXI?.map((p: any) => p.player) || [];
-      setJogadores(titulares);
-    });
-  }, [fixtureId]);
+  if (!jogadores || jogadores.length === 0) {
+    return (
+      <div
+        className="p-4 text-white"
+        style={{
+          background: "linear-gradient(180deg, #3a1c93, #25114d)",
+          borderRadius: "12px",
+        }}
+      >
+        <h5
+          className={`fw-bold mb-2 text-${
+            align === "left" ? "start" : "end"
+          }`}
+        >
+          {teamName}
+        </h5>
+
+        <p className="opacity-75 mb-0">
+          Escalação ainda não disponível.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <ul className="list-group mt-3">
-      {jogadores.map((jogador, index) => (
-        <li
-          key={index}
-          className="list-group-item d-flex justify-content-between"
-        >
-          <span>{jogador.name}</span>
-          <span className="badge bg-secondary">
-            {jogador.pos}
-          </span>
-        </li>
-      ))}
-    </ul>
+    <div
+      className="p-4 text-white"
+      style={{
+        background: "linear-gradient(180deg, #3a1c93, #25114d)",
+        borderRadius: "12px",
+      }}
+    >
+      <h5
+        className={`fw-bold mb-3 text-${
+          align === "left" ? "start" : "end"
+        }`}
+      >
+        {teamName}
+      </h5>
+
+      <ul className="list-unstyled mb-0">
+        {jogadores.map((jogador, index) => (
+          <li
+            key={index}
+            className="d-flex justify-content-between align-items-center mb-2"
+          >
+            {align === "left" ? (
+              <>
+                <span>
+                  {jogador.number} – {jogador.name}
+                </span>
+                <span className="badge bg-secondary">
+                  {jogador.pos}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="badge bg-secondary">
+                  {jogador.pos}
+                </span>
+                <span>
+                  {jogador.name} – {jogador.number}
+                </span>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
