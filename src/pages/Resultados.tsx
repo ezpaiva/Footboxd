@@ -15,7 +15,11 @@ export default function Resultados() {
     <>
     <Headers pageTitle="Resultados" />
     
-    <main className="container mt-4">
+      <main
+        className="container-fluid py-5"
+        style={{
+          backgroundColor: "#1d0b3f",
+        }}>
       <h2 className="mb-4">Todos os Resultados</h2>
 
       <div className="row">

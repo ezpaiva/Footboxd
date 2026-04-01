@@ -15,7 +15,11 @@ export default function AoVivo() {
   return (
     <>
       <Header pageTitle="Jogos ao Vivo" />
-    <main className="container mt-4">
+      <main
+        className="container-fluid py-5"
+        style={{
+          backgroundColor: "#1d0b3f",
+        }}>
       <h2 className="mb-4">Jogos ao Vivo</h2>
 
       <div className="row">

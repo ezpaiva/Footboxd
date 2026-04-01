@@ -14,7 +14,11 @@ export default function Proximos() {
   return (
     <>
       <Header pageTitle="Próximos Jogos" />
-    <main className="container mt-4">
+      <main
+        className="container-fluid py-5"
+        style={{
+          backgroundColor: "#1d0b3f",
+        }}>
       <h2 className="mb-4">Próximos Jogos</h2>
 
       <div className="row">

@@ -17,7 +17,7 @@ export default function Header({ pageTitle }: HeaderProps) {
           alt="Troféu"
           style={{ width: "55px", height: "55px" }}
         />
-        <h1 className="fw-bold m-0">FOOTBOXD</h1>
+        <h1 className="header-title">FOOTBOXD</h1>
         <img
           src="/favicon.png"
           alt="Troféu"
@@ -25,7 +25,7 @@ export default function Header({ pageTitle }: HeaderProps) {
         />
       </div>
 
-      <p className="mt-2 text-light opacity-75">
+      <p className="header-subtitle">
         Avalie os melhores jogos de futebol
       </p>
 

@@ -27,10 +27,8 @@ export default function Home() {
 
   return (
     <>
-  
       <Header pageTitle="Início" />
 
-  
       <main
         className="container-fluid py-5"
         style={{

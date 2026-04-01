@@ -101,8 +101,9 @@ export default function JogoDetalhe() {
 
       <main
         className="container-fluid py-5"
-        style={{ backgroundColor: "#1d0b3f" }}
-      >
+        style={{
+          backgroundColor: "#1d0b3f",
+        }}>
         <div className="container">
           <div className="row g-4">
 
