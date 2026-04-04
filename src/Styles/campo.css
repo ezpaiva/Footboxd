@@ -1,0 +1,97 @@
+
+  .campo {
+    max-width: 320px;
+  }
+
+  .bolha-jogador {
+    width: 24px;
+    height: 24px;
+    font-size: 0.65rem;
+  }
+
+  .circulo-central {
+    width: 60px;
+    height: 60px;
+  }
+
+.campo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+/*CAMPO DE FUTEBOL*/
+.campo {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 2 / 3;
+  background: linear-gradient(
+    to bottom,
+    #1b8f2c 0%,
+    #1b8f2c 12.5%,
+    #2da043 12.5%,
+    #2da043 25%,
+    #1b8f2c 25%,
+    #1b8f2c 37.5%,
+    #2da043 37.5%,
+    #2da043 50%,
+    #1b8f2c 50%,
+    #1b8f2c 62.5%,
+    #2da043 62.5%,
+    #2da043 75%,
+    #1b8f2c 75%,
+    #1b8f2c 87.5%,
+    #2da043 87.5%,
+    #2da043 100%
+  );
+  border-radius: 14px;
+  border: 2px solid #ffffff;
+  overflow: hidden;
+}
+
+.linha-campo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0 8%;
+  pointer-events: none;
+}
+
+.bolha-jogador {
+  width: 28px;
+  height: 28px;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circulo-central {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.numero-centro {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+

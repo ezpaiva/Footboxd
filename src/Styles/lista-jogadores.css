@@ -1,0 +1,65 @@
+/* ===== Caixa do time ===== */
+.lista-time-box {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+/* ===== Cabeçalho ===== */
+.lista-time-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.lista-time-header img {
+  width: 32px;
+  height: 32px;
+}
+
+.linha-jogador {
+  display: grid;
+  grid-template-columns: 36px 1fr 36px 70px;
+  align-items: center;
+  gap: 8px;
+}
+
+.bolha-numero {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.posicao {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.12)
+  );
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.25),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.4);
+}
