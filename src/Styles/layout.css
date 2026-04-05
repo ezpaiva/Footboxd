@@ -7,3 +7,24 @@
 .app-content {
   flex: 1;
 }
+.rodape {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(180deg, #2a005f, #160034);
+  color: #ffffff;
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  z-index: 1000;
+}
+
+.rodape address {
+  font-style: normal; /* remove itálico padrão do <address> */
+  opacity: 0.8;
+}
+
+.app-content {
+  padding-bottom: 40px; /* espaço para o rodapé */
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 
 import Header from "../components/Header";
 import CampoJogo from "../components/CampoJogo";
@@ -36,84 +36,85 @@ export default function JogoDetalhe() {
     <>
       <Header pageTitle="Detalhes do Jogo" />
 
-<div
-  className="placar-wrapper text-white py-3"
-  style={{
-    background: "linear-gradient(180deg, #3a1c93, #160034)",
-  }}
->
-  <div className="container text-center">
-    <div className="placar-unificado">
-
-      {/* TIME CASA */}
-      <div className="placar-time">
-        <img
-          src={jogo.teams.home.logo}
-          alt={jogo.teams.home.name}
-          className="placar-escudo"
-        />
-        <span className="placar-nome">
-          {jogo.teams.home.name}
-        </span>
-      </div>
-
-      {/* PLACAR */}
-      <div className="placar-centro">
-        <strong>{jogo.goals.home}</strong>
-        <img
-          src="/favicon.png"
-          alt="Placar"
-          className="placar-trofeu"
-        />
-        <strong>{jogo.goals.away}</strong>
-      </div>
-
-      {/* TIME FORA */}
-      <div className="placar-time">
-        <img
-          src={jogo.teams.away.logo}
-          alt={jogo.teams.away.name}
-          className="placar-escudo"
-        />
-        <span className="placar-nome">
-          {jogo.teams.away.name}
-        </span>
-      </div>
-
-    </div>
-
-    <small className="opacity-75 d-block mt-2">
-      {new Date(jogo.fixture.date).toLocaleDateString("pt-BR")}
-    </small>
-  </div>
-</div>
-
-      <main
-        className="container-fluid py-5"
+      <div
+        className="placar-wrapper text-white py-3"
         style={{
-          backgroundColor: "#1d0b3f",
-        }}>
+          background: "linear-gradient(180deg, #3a1c93, #160034)",
+        }}
+      >
+        <div className="container text-center">
+          <div className="placar-unificado">
 
-      {/* CAMPO */}
-      <CampoJogo
-        casa={casa.map((j) => ({ number: j.number }))}
-        fora={fora.map((j) => ({ number: j.number }))}
-      />
+            <div className="placar-time">
+              <img
+                src={jogo.teams.home.logo}
+                alt={jogo.teams.home.name}
+                className="placar-escudo"
+              />
+              <span className="placar-nome">
+                {jogo.teams.home.name}
+              </span>
+            </div>
 
-<ListaJogadores
-  teamName={jogo.teams.home.name}
-  teamLogo={jogo.teams.home.logo}
-  coach={coachCasa}
-  jogadores={casa}
-/>
+            <div className="placar-centro">
+              <strong>{jogo.goals.home}</strong>
+              <img
+                src="/favicon.png"
+                alt="Placar"
+                className="placar-trofeu"
+              />
+              <strong>{jogo.goals.away}</strong>
+            </div>
 
-<ListaJogadores
-  teamName={jogo.teams.away.name}
-  teamLogo={jogo.teams.away.logo}
-  coach={coachFora}
-  jogadores={fora}
-/>
-    </main>
+            <div className="placar-time">
+              <img
+                src={jogo.teams.away.logo}
+                alt={jogo.teams.away.name}
+                className="placar-escudo"
+              />
+              <span className="placar-nome">
+                {jogo.teams.away.name}
+              </span>
+            </div>
+
+          </div>
+
+          <small className="opacity-75 d-block mt-2">
+            {new Date(jogo.fixture.date).toLocaleDateString("pt-BR")}
+          </small>
+        </div>
+      </div>
+
+        <main
+          className="container-fluid py-5"
+          style={{
+            backgroundColor: "#1d0b3f",
+          }}>
+
+          <CampoJogo
+            casa={casa.map((j) => ({ number: j.number }))}
+            fora={fora.map((j) => ({ number: j.number }))}
+          />
+
+          <ListaJogadores
+            teamName={jogo.teams.home.name}
+            teamLogo={jogo.teams.home.logo}
+            coach={coachCasa}
+            jogadores={casa}
+          />
+
+          <ListaJogadores
+            teamName={jogo.teams.away.name}
+            teamLogo={jogo.teams.away.logo}
+            coach={coachFora}
+            jogadores={fora}
+          />
+          <div className="text-center mt-5">
+            <Link to="/" className="btn btn-outline-light px-5">
+              ← Voltar
+            </Link>
+          </div>
+      </main>
     </>
   );
 }
@@ -155,5 +156,6 @@ function Lista({
         </div>
       ))}
     </div>
+    
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
+import Rodape from "./Rodape";
 
 export default function AppLayout({
   children,
@@ -35,6 +36,7 @@ export default function AppLayout({
 
         {children}
         </main>
+      <Rodape />
     </div>
   );
 }
