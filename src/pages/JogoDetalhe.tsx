@@ -1,12 +1,16 @@
+
 import { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 
-import Header from "../components/Header";
-import CampoJogo from "../components/CampoJogo";
+import Header from "../components/layout/Header";
+import CampoJogo from "../components/ui/CampoJogo";
+import ListaJogadores from "../components/ui/ListaJogadores";
+
 import { buscarLineup } from "../services/apiFootball";
-import type { IJogo } from "../types/IJogo";
-import type { IJogador } from "../types/IJogador";
-import ListaJogadores from "../components/ListaJogadores";
+import { getUsuarioLogado } from "../services/authService";
+
+import type { IJogo } from "../types/game";
+import type { IJogador } from "../types/player";
 
 export default function JogoDetalhe() {
   const { fixtureId } = useParams<{ fixtureId: string }>();
@@ -18,11 +22,15 @@ export default function JogoDetalhe() {
   const [coachCasa, setCoachCasa] = useState("");
   const [coachFora, setCoachFora] = useState("");
 
+  const [avaliacoes, setAvaliacoes] = useState<Record<number, number>>({});
+
+  /* ✅ Hook corretamente no topo */
   useEffect(() => {
     if (!fixtureId) return;
 
     buscarLineup(Number(fixtureId)).then((data) => {
       if (!data || data.length < 2) return;
+
       setCasa(data[0].startXI.map((p: any) => p.player));
       setFora(data[1].startXI.map((p: any) => p.player));
       setCoachCasa(data[0].coach?.name || "Treinador");
@@ -32,10 +40,47 @@ export default function JogoDetalhe() {
 
   if (!jogo) return null;
 
+  /* ✅ Função simples e correta */
+  function salvarNota(jogador: IJogador, nota: number) {
+    setAvaliacoes((prev) => ({
+      ...prev,
+      [jogador.number]: nota,
+    }));
+  }
+
+  /* ✅ Salvar avaliação com login */
+  function salvarAvaliacao() {
+    const user = getUsuarioLogado();
+    if (!user) {
+      alert("Você precisa estar logado para salvar a avaliação.");
+      return;
+    } 
+
+    if (!jogo) return;
+
+    const avaliacaoFinal = {
+      usuario: user.email,
+      fixtureId: jogo.fixture.id,
+      jogo,
+      avaliadoEm: new Date().toISOString(),
+      notas: avaliacoes,
+    };
+
+    const historico = JSON.parse(
+      localStorage.getItem("avaliacoes") || "[]"
+    );
+
+    historico.push(avaliacaoFinal);
+    localStorage.setItem("avaliacoes", JSON.stringify(historico));
+
+    alert("Avaliação salva com sucesso!");
+  }
+
   return (
     <>
       <Header pageTitle="Detalhes do Jogo" />
 
+      {/* PLACAR */}
       <div
         className="placar-wrapper text-white py-3"
         style={{
@@ -44,7 +89,6 @@ export default function JogoDetalhe() {
       >
         <div className="container text-center">
           <div className="placar-unificado">
-
             <div className="placar-time">
               <img
                 src={jogo.teams.home.logo}
@@ -76,7 +120,6 @@ export default function JogoDetalhe() {
                 {jogo.teams.away.name}
               </span>
             </div>
-
           </div>
 
           <small className="opacity-75 d-block mt-2">
@@ -85,77 +128,47 @@ export default function JogoDetalhe() {
         </div>
       </div>
 
-        <main
-          className="container-fluid py-5"
-          style={{
-            backgroundColor: "#1d0b3f",
-          }}>
+      {/* CONTEÚDO */}
+      <main
+        className="container-fluid py-5"
+        style={{ backgroundColor: "#1d0b3f" }}
+      >
+        <CampoJogo
+          casa={casa.map((j) => ({ number: j.number }))}
+          fora={fora.map((j) => ({ number: j.number }))}
+        />
 
-          <CampoJogo
-            casa={casa.map((j) => ({ number: j.number }))}
-            fora={fora.map((j) => ({ number: j.number }))}
-          />
+        <ListaJogadores
+          teamName={jogo.teams.home.name}
+          teamLogo={jogo.teams.home.logo}
+          coach={coachCasa}
+          jogadores={casa}
+          salvarNota={salvarNota}
+        />
 
-          <ListaJogadores
-            teamName={jogo.teams.home.name}
-            teamLogo={jogo.teams.home.logo}
-            coach={coachCasa}
-            jogadores={casa}
-          />
+        <ListaJogadores
+          teamName={jogo.teams.away.name}
+          teamLogo={jogo.teams.away.logo}
+          coach={coachFora}
+          jogadores={fora}
+          salvarNota={salvarNota}
+        />
 
-          <ListaJogadores
-            teamName={jogo.teams.away.name}
-            teamLogo={jogo.teams.away.logo}
-            coach={coachFora}
-            jogadores={fora}
-          />
-          <div className="text-center mt-5">
-            <Link to="/" className="btn btn-outline-light px-5">
-              ← Voltar
-            </Link>
-          </div>
+        <div className="text-center mt-4">
+          <button
+            className="btn btn-success px-5"
+            onClick={salvarAvaliacao}
+          >
+            ✅ Salvar Avaliação
+          </button>
+        </div>
+
+        <div className="text-center mt-5">
+          <Link to="/" className="btn btn-outline-light px-5">
+            ← Voltar
+          </Link>
+        </div>
       </main>
     </>
-  );
-}
-
-function Lista({
-  team,
-  coach,
-  jogadores,
-}: {
-  team: string;
-  coach: string;
-  jogadores: IJogador[];
-}) {
-  return (
-    <div className="lista-time">
-      <h4>{team}</h4>
-
-      <div className="linha-nota">
-        <span>Treinador</span>
-        <strong>{coach}</strong>
-        <input type="number" placeholder="0–10" />
-      </div>
-
-      {jogadores.map((j) => (
-        <div key={j.number} className="linha-nota">
-          <span>{j.number}</span>
-          <strong>{j.name}</strong>
-          <input
-            type="number"
-            min={0}
-            max={10}
-            step={0.1}
-            onBlur={(e) => {
-              let v = parseFloat(e.target.value);
-              if (isNaN(v)) e.target.value = "";
-              else e.target.value = Math.min(10, Math.max(0, v)).toFixed(1);
-            }}
-          />
-        </div>
-      ))}
-    </div>
-    
   );
 }

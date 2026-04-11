@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import CardJogo from "../components/CardJogo";
+import CardJogo from "../components/ui/CardJogo";
 import { buscarProximos } from "../services/apiFootball";
-import type { IJogo } from "../types/IJogo";
-import Header from "../components/Header";
+import type { IJogo } from "../types/game";
+import Header from "../components/layout/Header";
 
 export default function Proximos() {
   const [proximos, setProximos] = useState<IJogo[]>([]);

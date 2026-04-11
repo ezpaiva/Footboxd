@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../components/layout/Header";
 
-import CardJogo from "../components/CardJogo";
+import CardJogo from "../components/ui/CardJogo";
 import {
   buscarResultados,
   buscarAoVivo,
   buscarProximos,
 } from "../services/apiFootball";
-import type { IJogo } from "../types/IJogo";
+import type { IJogo } from "../types/game";
 
 export default function Home() {
   const [resultados, setResultados] = useState<IJogo[]>([]);

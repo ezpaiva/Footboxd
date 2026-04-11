@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { getUsuarioLogado, logout } from "../../services/authService";
 
 interface Props {
   open: boolean;
@@ -6,14 +7,22 @@ interface Props {
 }
 
 export default function Sidebar({ open, onClose }: Props) {
+  const navigate = useNavigate();
+  const usuario = getUsuarioLogado(); 
+
   const menuItems = [
-    { label: "Início", path: "/" },
+    { label: "Início", path: "/home" },
     { label: "Resultados", path: "/resultados" },
     { label: "Ao Vivo", path: "/ao-vivo" },
     { label: "Próximos Jogos", path: "/proximos" },
-    { label: "Avaliações", path: "/avaliacoes" }, // futura
-    { label: "Configurações", path: "/configuracoes" }, // futura
+    { label: "Dashboard", path: "/dashboard" },
   ];
+
+  function handleLogout() {
+    logout();  
+    onClose(); 
+    navigate("/"); 
+  }
 
   return (
     <aside className={`sidebar ${open ? "open" : ""}`}>
@@ -21,7 +30,9 @@ export default function Sidebar({ open, onClose }: Props) {
         className="close-btn d-md-none"
         onClick={onClose}
         aria-label="Fechar menu"
-      > ✕ </button>
+      >
+        ✕
+      </button>
 
       <h3 className="sidebar-title">FOOTBOXD</h3>
 
@@ -40,6 +51,21 @@ export default function Sidebar({ open, onClose }: Props) {
           </li>
         ))}
       </ul>
+
+      {usuario && (
+        <div className="sidebar-footer">
+          <div className="sidebar-user">
+            <strong>{usuario.nome}</strong>
+          </div>
+
+          <button
+            className="btn btn-outline-light btn-sm w-100 mt-2"
+            onClick={handleLogout}
+          >
+            Sair
+          </button>
+        </div>
+      )}
     </aside>
   );
 }
