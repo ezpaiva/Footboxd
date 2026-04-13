@@ -1,30 +1,34 @@
 .app-layout {
-  display: flex;
-  min-height: 100vh;
   width: 100%;
+  min-height: 100vh;
 }
 
 .app-content {
-  flex: 1;
+  margin-left: 260px;              
+  width: calc(100% - 260px);
+  min-height: 100vh;
+
+  padding: 16px;
+  box-sizing: border-box;
 }
+
 .rodape {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
   background: linear-gradient(180deg, #2a005f, #160034);
   color: #ffffff;
   text-align: center;
   padding: 8px 12px;
   font-size: 0.75rem;
-  z-index: 1000;
 }
 
 .rodape address {
-  font-style: normal; /* remove itálico padrão do <address> */
+  font-style: normal;
   opacity: 0.8;
 }
 
-.app-content {
-  padding-bottom: 40px; /* espaço para o rodapé */
+@media (max-width: 768px) {
+  .app-content {
+    margin-left: 0;
+    width: 100%;
+  }
 }

@@ -15,7 +15,7 @@ export default function Sidebar({ open, onClose }: Props) {
     { label: "Resultados", path: "/resultados" },
     { label: "Ao Vivo", path: "/ao-vivo" },
     { label: "Próximos Jogos", path: "/proximos" },
-    { label: "Dashboard", path: "/dashboard" },
+    { label: "Minhas Avaliações", path: "/dashboard" },
   ];
 
   function handleLogout() {

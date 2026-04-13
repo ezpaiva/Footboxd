@@ -1,0 +1,96 @@
+.page .card {
+  background: linear-gradient(180deg, #3a0a6a, #1d003a);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+}
+
+.page .card.text-center {
+  background: linear-gradient(180deg, #4b0f85, #2a0050);
+}
+
+.page .card h5 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.page .card strong {
+  color: #ffffff;
+}
+
+.card.card-jogo {
+  margin-bottom: 1rem; 
+}
+
+.card-jogador-avaliado {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.card-jogador-avaliado img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.card-jogador-avaliado .info {
+  flex: 1;
+  line-height: 1.2;
+}
+
+.card-jogador-avaliado .info strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.card-jogador-avaliado .info span {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.card-jogador-avaliado .nota {
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.card-jogo-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.card-jogo-header img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.page .text-muted {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.card-jogo-info {
+  text-align: center; 
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-jogo-info small {
+  display: inline-block;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}

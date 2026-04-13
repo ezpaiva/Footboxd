@@ -1,30 +1,27 @@
-@import "./Styles/campo.css";
+@import "./Styles/reset.css";
 @import "./Styles/layout.css";
 @import "./Styles/sidebar.css";
+@import "./Styles/campo.css";
 @import "./Styles/placar.css";
 @import "./Styles/lista-jogadores.css";
-@import "./Styles/reset.css";
+@import "./Styles/dashboard.css";
 
 :root {
-  --text: #6b6375;
-  --text-h: #fff;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
-    rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --text: #e6e1ee;
+  --text-h: #ffffff;
+  --bg: #1d0b3f; 
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --border: rgba(255, 255, 255, 0.15);
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.15);
+  --accent-border: rgba(170, 59, 255, 0.5);
+
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -33,27 +30,18 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100%;
   overflow-x: hidden;
+
+  background-color: var(--bg);
 }
 
 #root {
   width: 100%;
-  min-height: 100vh;
 }
 
 body {
   font-family: var(--sans);
   color: var(--text);
-  background: var(--bg);
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  color: var(--text-h);
-}
-
-p {
-  margin: 0;
+  background-color: var(--bg);
+  line-height: 1.5;
 }

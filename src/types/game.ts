@@ -9,6 +9,7 @@ export interface IJogo {
 
   teams: {
     home: {
+      players: any;
       name: string;
       code?: string;
       logo?: string;
@@ -23,5 +24,12 @@ export interface IJogo {
   goals: {
     home: number | null;
     away: number | null;
+  };
+  
+  notas: {
+    [numero: number]: {
+      nota: number;
+      lado: "home" | "away";
+    };
   };
 }

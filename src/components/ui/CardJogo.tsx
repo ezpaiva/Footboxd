@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { IJogo } from "../types/IJogo";
+import type { IJogo } from "../../types/game";
 
 export default function CardJogo({ jogo }: { jogo: IJogo }) {
   const status = jogo.fixture.status?.short;

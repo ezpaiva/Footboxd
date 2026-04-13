@@ -1,17 +1,31 @@
 .sidebar {
+
   z-index: 1200;
   width: 240px;
   background: linear-gradient(180deg, #4b00d1, #2a005f);
   color: #fff;
   padding: 1.5rem 1rem;
   flex-shrink: 0;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
 }
+
 
 .sidebar-menu {
   list-style: none;
-  padding: 0;
+  padding: 1rem;
   margin: 0;
+  flex-grow: 1;
 }
+
 
 .sidebar-item {
   display: block;
@@ -61,6 +75,61 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
   z-index: 1100;
+}
+
+
+.sidebar-user {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-user strong {
+  display: block;
+  background:  #ffffff;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Botão Sair */
+.sidebar-footer button {
+  width: 100%;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 0.4rem 0;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover do botão Sair */
+.sidebar-footer button:hover {
+  background-color: #ffffff;
+  color: #5b2cff;
+}
+.sidebar-footer {
+  margin-top: auto; 
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* Ajuste mobile */
+@media (max-width: 768px) {
+  .sidebar-footer {
+    padding-bottom: 1.5rem;
+  }
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-user {
+  text-align: center;
 }
 
 /* Mobile */

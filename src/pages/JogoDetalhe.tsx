@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 
@@ -22,9 +21,8 @@ export default function JogoDetalhe() {
   const [coachCasa, setCoachCasa] = useState("");
   const [coachFora, setCoachFora] = useState("");
 
-  const [avaliacoes, setAvaliacoes] = useState<Record<number, number>>({});
+  const [avaliacoes, setAvaliacoes] = useState<Record<number, { nota: number; lado: "home" | "away" }>>({});
 
-  /* ✅ Hook corretamente no topo */
   useEffect(() => {
     if (!fixtureId) return;
 
@@ -40,15 +38,22 @@ export default function JogoDetalhe() {
 
   if (!jogo) return null;
 
-  /* ✅ Função simples e correta */
-  function salvarNota(jogador: IJogador, nota: number) {
+  function salvarNota(
+    jogador: IJogador,
+    nota: number,
+    lado: "home" | "away"
+  ) {
     setAvaliacoes((prev) => ({
       ...prev,
-      [jogador.number]: nota,
+      [jogador.number]: {
+        nome: jogador.name,
+        nota,
+        lado,
+      },
     }));
   }
 
-  /* ✅ Salvar avaliação com login */
+
   function salvarAvaliacao() {
     const user = getUsuarioLogado();
     if (!user) {
@@ -143,7 +148,7 @@ export default function JogoDetalhe() {
           teamLogo={jogo.teams.home.logo}
           coach={coachCasa}
           jogadores={casa}
-          salvarNota={salvarNota}
+          salvarNota={(jogador, nota) => salvarNota(jogador, nota, "home")}
         />
 
         <ListaJogadores
@@ -151,15 +156,14 @@ export default function JogoDetalhe() {
           teamLogo={jogo.teams.away.logo}
           coach={coachFora}
           jogadores={fora}
-          salvarNota={salvarNota}
+          salvarNota={(jogador, nota) => salvarNota(jogador, nota, "away")}
         />
 
         <div className="text-center mt-4">
           <button
             className="btn btn-success px-5"
             onClick={salvarAvaliacao}
-          >
-            ✅ Salvar Avaliação
+          >Salvar Avaliação
           </button>
         </div>
 
