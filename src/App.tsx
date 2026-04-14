@@ -36,7 +36,7 @@ export default function App() {
           <Route path="/ao-vivo" element={<AoVivo />} />
           <Route path="/proximos" element={<Proximos />} />
           <Route path="/jogo/:fixtureId" element={<JogoDetalhe />} />
-          <Route path="/dashboard" element={<Dashboard avaliacoes={[]} />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

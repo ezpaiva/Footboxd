@@ -20,7 +20,7 @@ export default function CardJogadorNoJogo({
 
   return (
     <div className="card card-jogo">
-      {/* Card do jogo (igual Resultados) */}
+      {/* Card do jogo */}
       <div className="card-jogo-header">
         <img src={jogo.teams.home.logo} alt={jogo.teams.home.name} />
         <span className="vs">vs</span>

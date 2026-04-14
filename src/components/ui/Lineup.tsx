@@ -1,4 +1,4 @@
-import type { IJogador } from "../types/IJogador";
+import type { IJogador } from "../../types/player";
 
 interface Props {
   teamName?: string;
