@@ -61,6 +61,7 @@ export default function Sidebar({ open, onClose }: Props) {
           <button
             className="btn btn-outline-light btn-sm w-100 mt-2"
             onClick={handleLogout}
+          
           >
             Sair
           </button>

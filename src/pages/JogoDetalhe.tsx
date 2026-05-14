@@ -11,6 +11,12 @@ import { getUsuarioLogado } from "../services/authService";
 import type { IJogo } from "../types/game";
 import type { IJogador } from "../types/player";
 
+interface NotaJogador {
+  nome: string;
+  nota: number;
+  lado: "home" | "away";
+}
+
 export default function JogoDetalhe() {
   const { fixtureId } = useParams<{ fixtureId: string }>();
   const location = useLocation();
@@ -21,7 +27,7 @@ export default function JogoDetalhe() {
   const [coachCasa, setCoachCasa] = useState("");
   const [coachFora, setCoachFora] = useState("");
 
-  const [avaliacoes, setAvaliacoes] = useState<Record<number, { nota: number; lado: "home" | "away" }>>({});
+  const [avaliacoes, setAvaliacoes] = useState<Record<number, NotaJogador>>({});
 
   useEffect(() => {
     if (!fixtureId) return;
@@ -29,8 +35,8 @@ export default function JogoDetalhe() {
     buscarLineup(Number(fixtureId)).then((data) => {
       if (!data || data.length < 2) return;
 
-      setCasa(data[0].startXI.map((p: any) => p.player));
-      setFora(data[1].startXI.map((p: any) => p.player));
+      setCasa(data[0].startXI.map((p) => p.player));
+      setFora(data[1].startXI.map((p) => p.player));
       setCoachCasa(data[0].coach?.name || "Treinador");
       setCoachFora(data[1].coach?.name || "Treinador");
     });

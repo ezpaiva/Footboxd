@@ -7,6 +7,7 @@ import CardJogo from "../components/ui/CardJogo";
 
 import { login, criarConta } from "../services/authService";
 import { buscarResultados } from "../services/apiFootball";
+import type { IJogo } from "../types/game";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-  const [resultados, setResultados] = useState<any[]>([]);
+  const [resultados, setResultados] = useState<IJogo[]>([]);
   const [loadingResultados, setLoadingResultados] = useState(true);
 
   useEffect(() => {

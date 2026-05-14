@@ -9,7 +9,7 @@ export interface IJogo {
 
   teams: {
     home: {
-      players: any;
+      players?: unknown;
       name: string;
       code?: string;
       logo?: string;

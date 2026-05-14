@@ -1,6 +1,5 @@
 import Header from "../components/layout/Header";
 import { getUsuarioLogado } from "../services/authService";
-import CardJogadorAvaliado from "../components/ui/CardJogadorAvaliado";
 import CardJogo from "../components/ui/CardJogo";
 import type { IJogo } from "../types/game";
 import CardJogadorNoJogo from "../components/ui/CardJogadorNoJogo";
