@@ -8,7 +8,7 @@ interface Props {
 
 export default function Sidebar({ open, onClose }: Props) {
   const navigate = useNavigate();
-  const usuario = getUsuarioLogado(); 
+  const usuario = getUsuarioLogado();
 
   const menuItems = [
     { label: "Início", path: "/home" },
@@ -19,9 +19,14 @@ export default function Sidebar({ open, onClose }: Props) {
   ];
 
   function handleLogout() {
-    logout();  
-    onClose(); 
-    navigate("/"); 
+    logout();
+    onClose();
+    navigate("/login", { replace: true });
+  }
+
+  function handleGoLogin() {
+    onClose();
+    navigate("/login");
   }
 
   return (
@@ -52,21 +57,30 @@ export default function Sidebar({ open, onClose }: Props) {
         ))}
       </ul>
 
-      {usuario && (
-        <div className="sidebar-footer">
-          <div className="sidebar-user">
-            <strong>{usuario.nome}</strong>
-          </div>
+      <div className="sidebar-footer">
+        {usuario ? (
+          <>
+            <div className="sidebar-user">
+              <strong>{usuario.nome}</strong>
+              <small className="opacity-75 d-block">{usuario.email}</small>
+            </div>
 
+            <button
+              className="btn btn-outline-light btn-sm w-100 mt-2"
+              onClick={handleLogout}
+            >
+              Sair
+            </button>
+          </>
+        ) : (
           <button
-            className="btn btn-outline-light btn-sm w-100 mt-2"
-            onClick={handleLogout}
-          
+            className="btn btn-outline-light btn-sm w-100"
+            onClick={handleGoLogin}
           >
-            Sair
+            Login
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </aside>
   );
 }

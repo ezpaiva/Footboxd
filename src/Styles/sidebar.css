@@ -144,3 +144,13 @@
     transform: translateX(0);
   }
 }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.sidebar-user {
+  text-align: center;
+  opacity: 0.9;
+}

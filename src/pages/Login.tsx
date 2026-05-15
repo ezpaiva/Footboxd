@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useEffect, useMemo, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import Header from "../components/layout/Header";
 import Rodape from "../components/layout/Footer";
@@ -9,8 +10,17 @@ import { login, criarConta } from "../services/authService";
 import { buscarResultados } from "../services/apiFootball";
 import type { IJogo } from "../types/game";
 
+type LoginLocationState = { from?: { pathname?: string } };
+
+function resolveFrom(state: unknown, fallback = "/home") {
+  const s = state as LoginLocationState | null;
+  const path = s?.from?.pathname;
+  return typeof path === "string" && path && path !== "/login" ? path : fallback;
+}
+
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [modoCriarConta, setModoCriarConta] = useState(false);
   const [nome, setNome] = useState("");
@@ -21,6 +31,11 @@ export default function Login() {
   const [resultados, setResultados] = useState<IJogo[]>([]);
   const [loadingResultados, setLoadingResultados] = useState(true);
 
+  const from = useMemo(() => resolveFrom(location.state), [location.state]);
+
+  const token = localStorage.getItem("token");
+  if (token) return <Navigate to={from} replace />;
+
   useEffect(() => {
     buscarResultados()
       .then((data) => setResultados(data.slice(0, 9)))
@@ -28,16 +43,14 @@ export default function Login() {
       .finally(() => setLoadingResultados(false));
   }, []);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
 
     if (modoCriarConta) {
-      const sucesso = criarConta(nome, email, senha);
-      if (!sucesso) {
-        setErro("E-mail já cadastrado.");
-        return;
-      }
+      const resultado = await criarConta(nome, email, senha);
+      if (!resultado.ok) return setErro(resultado.message);
+
       alert("Conta criada com sucesso! Faça login.");
       setModoCriarConta(false);
       setNome("");
@@ -45,27 +58,18 @@ export default function Login() {
       return;
     }
 
-    const user = login(email, senha);
-    if (!user) {
-      setErro("E-mail ou senha inválidos.");
-      return;
-    }
+    const user = await login(email, senha);
+    if (!user) return setErro("E-mail ou senha inválidos.");
 
-    navigate("/home");
+    navigate(from, { replace: true });
   }
 
   return (
     <>
       <Header pageTitle="Footboxd" />
 
-      <main
-        className="container-fluid py-5"
-        style={{ backgroundColor: "#1d0b3f" }}
-      >
-        <form
-          onSubmit={handleSubmit}
-          className="col-md-6 mx-auto mb-5"
-        >
+      <main className="container-fluid py-5" style={{ backgroundColor: "#1d0b3f" }}>
+        <form onSubmit={handleSubmit} className="col-md-6 mx-auto mb-5">
           <h3 className="mb-3 text-center text-light">
             {modoCriarConta ? "Criar Conta" : "Login"}
           </h3>
@@ -98,13 +102,9 @@ export default function Login() {
             onChange={(e) => setSenha(e.target.value)}
           />
 
-          {erro && (
-            <div className="alert alert-danger py-1 text-center">
-              {erro}
-            </div>
-          )}
+          {erro && <div className="alert alert-danger py-1 text-center">{erro}</div>}
 
-          <button className="btn btn-primary w-100 mb-2">
+          <button className="btn btn-primary w-100 mb-2" type="submit">
             {modoCriarConta ? "Criar Conta" : "Entrar"}
           </button>
 
@@ -113,40 +113,24 @@ export default function Login() {
             className="btn btn-link w-100 text-light"
             onClick={() => {
               setErro("");
-              setModoCriarConta(!modoCriarConta);
+              setModoCriarConta((v) => !v);
             }}
           >
-            {modoCriarConta
-              ? "Já tenho conta"
-              : "Criar conta"}
+            {modoCriarConta ? "Já tenho conta" : "Criar conta"}
           </button>
         </form>
+
         <section>
-          <h5 className="text-center mb-3 text-light">
-            Últimos Resultados
-          </h5>
+          <h5 className="text-center mb-3 text-light">Últimos Resultados</h5>
 
           {loadingResultados ? (
-            <div className="text-center text-light">
-              Carregando resultados...
-            </div>
+            <div className="text-center text-light">Carregando resultados...</div>
           ) : resultados.length === 0 ? (
-            <div className="alert alert-info text-center">
-              Nenhum resultado disponível.
-            </div>
+            <div className="alert alert-info text-center">Nenhum resultado disponível.</div>
           ) : (
-            <div
-              className="d-flex gap-3 px-3"
-              style={{
-                overflowX: "auto",
-                whiteSpace: "nowrap",
-              }}
-            >
+            <div className="d-flex gap-3 px-3" style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
               {resultados.map((jogo) => (
-                <div
-                  key={jogo.fixture.id}
-                  style={{ minWidth: 260 }}
-                >
+                <div key={jogo.fixture.id} style={{ minWidth: 260 }}>
                   <CardJogo jogo={jogo} />
                 </div>
               ))}
