@@ -93,3 +93,17 @@ export async function buscarLineup(fixtureId: number) {
   saveToSessionCache(cacheKey, data);
   return data;
 }
+
+export async function buscarFixture(fixtureId: number) {
+  const cacheKey = `fixture_${fixtureId}`;
+  const cached = getFromSessionCache<IJogo>(cacheKey);
+  if (cached) {
+    return cached;
+  }
+  const data = await fetchApi<IJogo>(`/fixtures?id=${fixtureId}`);
+  if (data.length > 0) {
+    saveToSessionCache(cacheKey, data[0]);
+    return data[0];
+  }
+  return null;
+}

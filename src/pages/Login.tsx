@@ -48,9 +48,8 @@ export default function Login() {
     setErro("");
 
     if (modoCriarConta) {
-      const resultado = await criarConta(nome, email, senha);
-      if (!resultado.ok) return setErro(resultado.message);
-
+      const ok = await criarConta(nome, email, senha);
+      if (!ok) return setErro("Falha ao criar conta. Verifique os dados.");
       alert("Conta criada com sucesso! Faça login.");
       setModoCriarConta(false);
       setNome("");

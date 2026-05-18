@@ -5,7 +5,10 @@ interface Props {
   teamLogo?: string;
   coach: string;
   jogadores: IJogador[];
-  salvarNota: (jogador: IJogador, nota: number) => void;
+  notas?: Record<number, number>;
+  coachNota?: number;
+  onNotaChange?: (jogador: IJogador, nota: number | undefined) => void;
+  onCoachNotaChange?: (nota: number | undefined) => void;
 }
 
 export default function ListaJogadores({
@@ -13,7 +16,10 @@ export default function ListaJogadores({
   teamLogo,
   coach,
   jogadores,
-  salvarNota,
+  notas,
+  coachNota,
+  onNotaChange,
+  onCoachNotaChange,
 }: Props) {
   return (
     <div className="lista-time-box">
@@ -35,6 +41,19 @@ export default function ListaJogadores({
           max={10}
           step={0.1}
           placeholder="0–10"
+          value={coachNota ?? ""}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (!onCoachNotaChange) return;
+            if (value === "") {
+              onCoachNotaChange(undefined);
+              return;
+            }
+            const parsed = Number(value);
+            if (!Number.isNaN(parsed)) {
+              onCoachNotaChange(Math.min(10, Math.max(0, parsed)));
+            }
+          }}
         />
       </div>
 
@@ -51,18 +70,24 @@ export default function ListaJogadores({
             max={10}
             step={0.1}
             placeholder="0–10"
-            onBlur={(e) => {
-              let v = parseFloat(e.target.value);
-
-              if (isNaN(v)) {
-                e.target.value = "";
+            value={notas?.[j.number] ?? ""}
+            onChange={(e) => {
+              if (!onNotaChange) return;
+              const value = e.target.value;
+              if (value === "") {
+                onNotaChange(j, undefined);
                 return;
               }
-
-              v = Math.min(10, Math.max(0, v));
-              e.target.value = v.toFixed(1);
-
-              salvarNota(j, v);
+              const parsed = Number(value);
+              if (!Number.isNaN(parsed)) {
+                onNotaChange(j, Math.min(10, Math.max(0, parsed)));
+              }
+            }}
+            onBlur={(e) => {
+              const parsed = Number(e.target.value);
+              if (!Number.isNaN(parsed)) {
+                e.target.value = parsed.toFixed(1);
+              }
             }}
           />
         </div>
