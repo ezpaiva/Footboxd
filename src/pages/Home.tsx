@@ -29,23 +29,21 @@ export default function Home() {
     <>
       <Header pageTitle="Início" />
 
-      <main
-        className="container-fluid py-5"
-        style={{
-          backgroundColor: "#1d0b3f",
-        }}>
-        <div className="d-flex justify-content-center mt-4">
+      <main className="container-fluid py-5">
+        <div className="d-flex justify-content-center mt-4" style={{ padding: "0 1rem" }}>
           <div
-            className="d-flex align-items-center mb-5"
+            className="d-flex align-items-center mb-5 tabs-container"
             style={{
-              width: "90%",          
-              maxWidth: "999px",
               background: "linear-gradient(180deg, #3a1c93, #160034)",
               border: "1px solid #000e8f",
+              borderRadius: "999px",
+              padding: "8px",
+              gap: "8px",
+              maxWidth: "100%",
             }}
           >
             <button
-              className="btn flex-fill fw-semibold text-center "
+              className="btn flex-fill fw-semibold text-center tab-btn"
               style={{
                 borderRadius: "999px",
                 background:
@@ -53,7 +51,13 @@ export default function Home() {
                     ? "linear-gradient(90deg, #6a00ff, #7b2cff)"
                     : "transparent",
                 color: abaAtiva === "resultados" ? "#ffffff" : "#b9a6ff",
-                padding: "10px 0",
+                padding: "12px 20px",
+                minWidth: "120px",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "0.95rem",
+                fontWeight: "600",
+                transition: "all 0.3s ease",
               }}
               onClick={() => setAbaAtiva("resultados")}
             >
@@ -61,7 +65,7 @@ export default function Home() {
             </button>
 
             <button
-              className="btn flex-fill fw-semibold text-center"
+              className="btn flex-fill fw-semibold text-center tab-btn"
               style={{
                 borderRadius: "999px",
                 background:
@@ -69,7 +73,13 @@ export default function Home() {
                     ? "linear-gradient(90deg, #6a00ff, #7b2cff)"
                     : "transparent",
                 color: abaAtiva === "aoVivo" ? "#ffffff" : "#b9a6ff",
-                padding: "10px 0",
+                padding: "12px 20px",
+                minWidth: "120px",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "0.95rem",
+                fontWeight: "600",
+                transition: "all 0.3s ease",
               }}
               onClick={() => setAbaAtiva("aoVivo")}
             >
@@ -77,7 +87,7 @@ export default function Home() {
             </button>
 
             <button
-              className="btn flex-fill fw-semibold text-center"
+              className="btn flex-fill fw-semibold text-center tab-btn"
               style={{
                 borderRadius: "999px",
                 background:
@@ -85,7 +95,13 @@ export default function Home() {
                     ? "linear-gradient(90deg, #6a00ff, #7b2cff)"
                     : "transparent",
                 color: abaAtiva === "proximos" ? "#ffffff" : "#b9a6ff",
-                padding: "10px 0",
+                padding: "12px 20px",
+                minWidth: "120px",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "0.95rem",
+                fontWeight: "600",
+                transition: "all 0.3s ease",
               }}
               onClick={() => setAbaAtiva("proximos")}
             >
@@ -95,11 +111,10 @@ export default function Home() {
         </div>
 
         <section className="mb-5">
-
-          <div className="row">
+          <div className="row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
             {abaAtiva === "resultados" &&
               resultados.slice(0, 9).map((jogo) => (
-                <div key={jogo.fixture.id} className="col-12 col-md-4 mb-3">
+                <div key={jogo.fixture.id}>
                   <CardJogo jogo={jogo} />
                 </div>
               ))}
@@ -113,14 +128,14 @@ export default function Home() {
 
             {abaAtiva === "aoVivo" &&
               aoVivo.slice(0, 9).map((jogo) => (
-                <div key={jogo.fixture.id} className="col-12 col-md-4 mb-3">
+                <div key={jogo.fixture.id}>
                   <CardJogo jogo={jogo} />
                 </div>
               ))}
 
             {abaAtiva === "proximos" &&
               proximos.slice(0, 9).map((jogo) => (
-                <div key={jogo.fixture.id} className="col-12 col-md-4 mb-3">
+                <div key={jogo.fixture.id}>
                   <CardJogo jogo={jogo} />
                 </div>
               ))}

@@ -1,0 +1,62 @@
+/* ========================================
+   FOOTBOXD COLOR SYSTEM
+   ======================================== */
+
+:root {
+  /* Primary Colors - Purple/Violet */
+  --primary-dark: #2a005f;
+  --primary: #4b00d1;
+  --primary-light: #5b2cff;
+  
+  /* Secondary Colors - Background Tones */
+  --bg-dark: #1d0b3f;
+  --bg-darker: #160034;
+  --bg-surface: rgba(85, 10, 160, 0.75);
+  --bg-surface-hover: rgba(85, 10, 160, 0.85);
+  
+  /* Neutral Colors */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.92);
+  --text-muted: rgba(255, 255, 255, 0.70);
+  --text-disabled: rgba(255, 255, 255, 0.50);
+  
+  /* Border & Divider */
+  --border-primary: rgba(255, 255, 255, 0.12);
+  --border-secondary: rgba(255, 255, 255, 0.08);
+  --divider: rgba(255, 255, 255, 0.2);
+  
+  /* Overlay & Backdrop */
+  --overlay: rgba(0, 0, 0, 0.45);
+  --overlay-light: rgba(0, 0, 0, 0.15);
+  --overlay-lighter: rgba(0, 0, 0, 0.08);
+  
+  /* Badge & Component */
+  --badge-bg: rgba(255, 255, 255, 0.14);
+  --badge-border: rgba(255, 255, 255, 0.18);
+  
+  /* Interactive */
+  --hover: rgba(255, 255, 255, 0.12);
+  --active: rgba(255, 255, 255, 0.2);
+  
+  /* Semantic */
+  --danger: #ff6b6b;
+  --success: #51cf66;
+  --warning: #ffa940;
+  
+  /* Shadows */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.25);
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.2s ease-in-out;
+  --transition-slow: 0.3s ease-in-out;
+}
+

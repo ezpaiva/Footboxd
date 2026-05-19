@@ -1,156 +1,196 @@
-.sidebar {
+/* ========================================
+   SIDEBAR STYLES
+   ======================================== */
 
+.sidebar {
   z-index: 1200;
-  width: 240px;
-  background: linear-gradient(180deg, #4b00d1, #2a005f);
-  color: #fff;
+  width: 260px;
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+  color: var(--text-primary);
   padding: 1.5rem 1rem;
   flex-shrink: 0;
-
   position: fixed;
   top: 0;
   left: 0;
-  width: 260px;
   height: 100vh;
-
   display: flex;
   flex-direction: column;
-
+  border-right: 1px solid var(--border-primary);
 }
-
 
 .sidebar-menu {
   list-style: none;
   padding: 1rem;
   margin: 0;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
-
 
 .sidebar-item {
   display: block;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
-  color: #fff;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
   text-decoration: none;
   opacity: 0.85;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--hover);
+  opacity: 1;
 }
 
 .sidebar-item.active {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--active);
   font-weight: 600;
+  opacity: 1;
 }
 
+/* Menu Toggle Button */
 .menu-toggle {
   position: fixed;
   top: 12px;
   left: 12px;
   z-index: 1300;
-  background: rgba(0, 0, 0, 0.45);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+  background: var(--overlay);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
   padding: 10px 12px;
   font-size: 1.2rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: none;
 }
 
+.menu-toggle:hover {
+  background: var(--hover);
+}
+
+/* Close Button */
 .close-btn {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgba(255, 255, 255, 0.15);
-  border: none;
-  color: #fff;
+  background: var(--hover);
+  border: 1px solid var(--border-secondary);
+  color: var(--text-primary);
   border-radius: 50%;
   width: 36px;
   height: 36px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
+.close-btn:hover {
+  background: var(--active);
+  border-color: var(--border-primary);
+}
+
+/* Sidebar Backdrop */
 .sidebar-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--overlay);
   z-index: 1100;
+  display: none;
 }
 
-
+/* Sidebar User Info */
 .sidebar-user {
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.4px;
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .sidebar-user strong {
   display: block;
-  background:  #ffffff;
+  background: linear-gradient(135deg, var(--primary-light), var(--text-primary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-top: 0.25rem;
 }
 
-/* Botão Sair */
+/* Sidebar Footer */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid var(--divider);
+  background: var(--overlay-light);
+  border-radius: var(--radius-md);
+}
+
 .sidebar-footer button {
   width: 100%;
   font-size: 0.85rem;
   font-weight: 500;
-  border-radius: 6px;
-  padding: 0.4rem 0;
-  transition: all 0.2s ease-in-out;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  transition: all var(--transition-normal);
+  background: transparent;
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  cursor: pointer;
 }
 
-/* Hover do botão Sair */
 .sidebar-footer button:hover {
-  background-color: #ffffff;
-  color: #5b2cff;
-}
-.sidebar-footer {
-  margin-top: auto; 
-  padding: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.15);
+  background-color: var(--text-primary);
+  color: var(--primary);
+  border-color: var(--text-primary);
 }
 
-/* Ajuste mobile */
-@media (max-width: 768px) {
-  .sidebar-footer {
-    padding-bottom: 1.5rem;
-  }
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  padding: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.15);
-}
-
-.sidebar-user {
-  text-align: center;
-}
-
-/* Mobile */
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
     transform: translateX(-100%);
     height: 100%;
+    width: 260px;
+    z-index: 1200;
+    transition: transform 0.3s ease-in-out;
   }
 
   .sidebar.open {
     transform: translateX(0);
   }
+
+  .sidebar-backdrop {
+    display: none !important;
+  }
+
+  .sidebar-backdrop.open {
+    display: block !important;
+  }
+
+  .menu-toggle {
+    display: block !important;
+  }
+
+  .close-btn {
+    display: flex !important;
+  }
+
+  .sidebar-footer {
+    padding-bottom: 1.5rem;
+  }
 }
 
-.sidebar-footer {
-  margin-top: auto;
-  padding-top: 16px;
+@media (min-width: 769px) {
+  .d-md-none {
+    display: none !important;
+  }
 }
 
-.sidebar-user {
-  text-align: center;
-  opacity: 0.9;
-}

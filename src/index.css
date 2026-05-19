@@ -1,3 +1,4 @@
+@import "./Styles/colors.css";
 @import "./Styles/reset.css";
 @import "./Styles/layout.css";
 @import "./Styles/sidebar.css";
@@ -9,34 +10,12 @@
 :root {
   --text: #e6e1ee;
   --text-h: #ffffff;
-  --bg: #1d0b3f; 
-
+  --bg: #1d0b3f;
   --border: rgba(255, 255, 255, 0.15);
   --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.15);
   --accent-border: rgba(170, 59, 255, 0.5);
-
   --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden;
-
-  background-color: var(--bg);
-}
-
-#root {
-  width: 100%;
 }
 
 body {

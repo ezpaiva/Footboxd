@@ -67,8 +67,9 @@ export default function Login() {
     <>
       <Header pageTitle="Footboxd" />
 
-      <main className="container-fluid py-5" style={{ backgroundColor: "#1d0b3f" }}>
-        <form onSubmit={handleSubmit} className="col-md-6 mx-auto mb-5">
+      <main className="container-fluid py-5">
+        <div className="form-container">
+          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
           <h3 className="mb-3 text-center text-light">
             {modoCriarConta ? "Criar Conta" : "Login"}
           </h3>
@@ -117,9 +118,10 @@ export default function Login() {
           >
             {modoCriarConta ? "Já tenho conta" : "Criar conta"}
           </button>
-        </form>
+          </form>
+        </div>
 
-        <section>
+        <section style={{ marginTop: "2rem" }}>
           <h5 className="text-center mb-3 text-light">Últimos Resultados</h5>
 
           {loadingResultados ? (

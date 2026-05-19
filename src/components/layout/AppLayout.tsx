@@ -17,12 +17,11 @@ export default function AppLayout() {
 
   return (
     <div className="app-layout">
-
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {sidebarOpen && (
         <div
-          className="sidebar-backdrop"
+          className={`sidebar-backdrop ${sidebarOpen ? "open" : ""}`}
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -36,10 +35,12 @@ export default function AppLayout() {
           ☰
         </button>
 
-        <Outlet />
-      </main>
+        <div className="app-main">
+          <Outlet />
+        </div>
 
-      <Rodape />
+        <Rodape />
+      </main>
     </div>
   );
 }

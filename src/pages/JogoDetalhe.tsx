@@ -229,7 +229,7 @@ export default function JogoDetalhe() {
       </div>
 
       {/* CONTEÚDO */}
-      <main className="container-fluid py-5" style={{ backgroundColor: "#1d0b3f" }}>
+      <main className="container-fluid py-5\">
         <CampoJogo
           casa={casa.map((j) => ({ number: j.number }))}
           fora={fora.map((j) => ({ number: j.number }))}

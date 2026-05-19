@@ -1,96 +1,233 @@
-.page .card {
-  background: linear-gradient(180deg, #3a0a6a, #1d003a);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
+/* ========================================
+   DASHBOARD STYLES
+   ======================================== */
+
+.footboxd-card {
+  background: linear-gradient(180deg, var(--bg-surface), var(--bg-surface-hover));
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.page .card.text-center {
-  background: linear-gradient(180deg, #4b0f85, #2a0050);
+.footboxd-card h5,
+.footboxd-card strong,
+.footboxd-card span {
+  color: var(--text-primary);
 }
 
-.page .card h5 {
-  margin-bottom: 1rem;
+.footboxd-card h5 {
   font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  margin: 0 0 1rem 0;
 }
 
-.page .card strong {
-  color: #ffffff;
+.footboxd-muted {
+  color: var(--text-muted);
 }
 
-.card.card-jogo {
-  margin-bottom: 1rem; 
+.footboxd-muted.small {
+  font-size: 0.85rem;
 }
 
-.card-jogador-avaliado {
+/* Table Styles */
+.footboxd-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+}
+
+.footboxd-table thead {
+  border-bottom: 1px solid var(--border-secondary);
+  background: transparent;
+}
+
+.footboxd-table thead th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  padding: 12px 8px;
+  text-align: left;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+  background: transparent;
+}
+
+.footboxd-table tbody td {
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-secondary);
+  padding: 12px 8px;
+  vertical-align: middle;
+  background: transparent;
+}
+
+.footboxd-table tbody tr:hover {
+  background: var(--overlay-lighter);
+}
+
+/* Table Responsive Wrapper */
+.table-responsive {
+  background: linear-gradient(180deg, var(--bg-surface), var(--bg-surface-hover));
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  overflow-x: auto;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge Styles */
+.badge-footboxd {
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* Dashboard Reference Component */
+.dashboard-referencia {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  gap: 8px;
 }
 
-.card-jogador-avaliado img {
-  width: 32px;
-  height: 32px;
+.dashboard-referencia img {
+  width: 24px;
+  height: 24px;
   object-fit: contain;
+  border-radius: 50%;
+  border: 1px solid var(--border-secondary);
   flex-shrink: 0;
 }
 
-.card-jogador-avaliado .info {
-  flex: 1;
-  line-height: 1.2;
+.dashboard-referencia span {
+  min-width: 0;
+  color: var(--text-primary);
+  font-size: 0.95rem;
 }
 
-.card-jogador-avaliado .info strong {
-  display: block;
-  font-size: 0.9rem;
-  color: #ffffff;
+/* List Group Customization */
+.footboxd-card .list-group-item {
+  background: transparent;
+  border-color: var(--border-secondary);
+  color: var(--text-secondary);
+  padding: 12px 0;
 }
 
-.card-jogador-avaliado .info span {
-  font-size: 0.75rem;
-  opacity: 0.8;
+.footboxd-card .list-group-item:hover {
+  background: var(--overlay-lighter);
 }
 
-.card-jogador-avaliado .nota {
-  background: rgba(0, 0, 0, 0.65);
-  color: #ffffff;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  white-space: nowrap;
+.footboxd-card .list-group-item:last-child {
+  border-bottom: none;
 }
 
-.card-jogo-header {
+/* Table Responsive */
+.footboxd-card .table-responsive {
+  overflow-x: auto;
+  border-radius: 0;
+}
+
+/* Stats Card */
+.stats-card {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  padding: 1.5rem;
+  position: relative;
 }
 
-.card-jogo-header img {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-.page .text-muted {
-  color: rgba(255, 255, 255, 0.7) !important;
-}
-
-.card-jogo-info {
-  text-align: center; 
-  margin-top: 0.5rem;
+.stats-card small {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   margin-bottom: 0.5rem;
 }
 
-.card-jogo-info small {
-  display: inline-block;
-  font-size: 0.75rem;
-  opacity: 0.85;
+.stats-card .value {
+  color: var(--primary-light);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
 }
+
+/* Buttons */
+.btn-outline-light {
+  color: var(--text-primary);
+  border-color: var(--border-primary);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  transition: all var(--transition-normal);
+  background: transparent;
+  border: 1px solid;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-outline-light:hover {
+  background: var(--hover);
+  border-color: var(--border-primary);
+}
+
+.btn-outline-danger {
+  color: var(--danger);
+  border-color: var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  transition: all var(--transition-normal);
+  background: transparent;
+  border: 1px solid;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-outline-danger:hover {
+  background: var(--danger);
+  color: var(--text-primary);
+}
+
+/* Alert */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alert-danger {
+  background: rgba(255, 107, 107, 0.12);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footboxd-card {
+    border-radius: var(--radius-lg);
+  }
+
+  .footboxd-table {
+    font-size: 0.9rem;
+  }
+
+  .btn-outline-light,
+  .btn-outline-danger {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+}
+
