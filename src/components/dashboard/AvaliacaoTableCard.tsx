@@ -1,5 +1,7 @@
 import type { JogoInfo } from "../../utils/jogoInfo";
 import Referencia, { type AvaliacaoResponse } from "./Referencia";
+import LoadingState from "../ui/states/LoadingState";
+import EmptyState from "../ui/states/EmptyState";
 
 function tipoBadge(tipo: AvaliacaoResponse["tipo"]) {
   if (tipo === "JOGADOR") return "JOG";
@@ -23,9 +25,12 @@ export default function AvaliacaoTableCard({
       <h5 className="mb-3">Todas as avaliações</h5>
 
       {carregando ? (
-        <div className="footboxd-muted">Carregando...</div>
+        <LoadingState message="Carregando avaliações..." />
       ) : itens.length === 0 ? (
-        <div className="footboxd-muted small">Nenhuma avaliação registrada ainda.</div>
+        <EmptyState
+          title="Nenhuma avaliação encontrada"
+          message="A lista está vazia no momento. Avalie algum jogo para aparecer aqui."
+        />
       ) : (
         <div className="table-responsive">
           <table className="table table-sm table-borderless align-middle footboxd-table">

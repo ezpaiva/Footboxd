@@ -5,6 +5,9 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Rodape from "../components/layout/Footer";
 import CardJogo from "../components/ui/CardJogo";
+import LoadingState from "../components/ui/states/LoadingState";
+import ErrorState from "../components/ui/states/ErrorState";
+import EmptyState from "../components/ui/states/EmptyState";
 
 import { login, criarConta } from "../services/authService";
 import { buscarResultados } from "../services/apiFootball";
@@ -30,6 +33,7 @@ export default function Login() {
 
   const [resultados, setResultados] = useState<IJogo[]>([]);
   const [loadingResultados, setLoadingResultados] = useState(true);
+  const [erroResultados, setErroResultados] = useState<string | null>(null);
 
   const from = useMemo(() => resolveFrom(location.state), [location.state]);
 
@@ -37,30 +41,49 @@ export default function Login() {
   if (token) return <Navigate to={from} replace />;
 
   useEffect(() => {
-    buscarResultados()
-      .then((data) => setResultados(data.slice(0, 9)))
-      .catch(() => setResultados([]))
-      .finally(() => setLoadingResultados(false));
+    async function carregarResultados() {
+      setLoadingResultados(true);
+      setErroResultados(null);
+
+      try {
+        const data = await buscarResultados();
+        setResultados(data.slice(0, 9));
+      } catch (error) {
+        console.error("Login resultados error:", error);
+        setErroResultados("Falha ao carregar os resultados.");
+        setResultados([]);
+      } finally {
+        setLoadingResultados(false);
+      }
+    }
+
+    carregarResultados();
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
 
-    if (modoCriarConta) {
-      const ok = await criarConta(nome, email, senha);
-      if (!ok) return setErro("Falha ao criar conta. Verifique os dados.");
-      alert("Conta criada com sucesso! Faça login.");
-      setModoCriarConta(false);
-      setNome("");
-      setSenha("");
-      return;
+    try {
+      if (modoCriarConta) {
+        const ok = await criarConta(nome, email, senha);
+        if (!ok) return setErro("Falha ao criar conta. Verifique os dados.");
+
+        alert("Conta criada com sucesso! Faça login.");
+        setModoCriarConta(false);
+        setNome("");
+        setSenha("");
+        return;
+      }
+
+      const user = await login(email, senha);
+      if (!user) return setErro("E-mail ou senha inválidos.");
+
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error("Login submit error:", error);
+      setErro("Ocorreu um erro durante o login. Tente novamente.");
     }
-
-    const user = await login(email, senha);
-    if (!user) return setErro("E-mail ou senha inválidos.");
-
-    navigate(from, { replace: true });
   }
 
   return (
@@ -125,9 +148,24 @@ export default function Login() {
           <h5 className="text-center mb-3 text-light">Últimos Resultados</h5>
 
           {loadingResultados ? (
-            <div className="text-center text-light">Carregando resultados...</div>
+            <LoadingState message="Buscando os últimos resultados" />
+          ) : erroResultados ? (
+            <ErrorState message={erroResultados} onRetry={() => {
+              setErroResultados(null);
+              setLoadingResultados(true);
+              buscarResultados()
+                .then((data) => setResultados(data.slice(0, 9)))
+                .catch((error) => {
+                  console.error("Retry resultados error:", error);
+                  setErroResultados("Falha ao carregar os resultados.");
+                })
+                .finally(() => setLoadingResultados(false));
+            }} />
           ) : resultados.length === 0 ? (
-            <div className="alert alert-info text-center">Nenhum resultado disponível.</div>
+            <EmptyState
+              title="Sem resultados"
+              message="Não foi possível carregar resultados no momento."
+            />
           ) : (
             <div className="d-flex gap-3 px-3" style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
               {resultados.map((jogo) => (

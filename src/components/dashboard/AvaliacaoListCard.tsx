@@ -1,5 +1,7 @@
 import type { JogoInfo } from "../../utils/jogoInfo";
 import Referencia, { type AvaliacaoResponse } from "./Referencia";
+import LoadingState from "../ui/states/LoadingState";
+import EmptyState from "../ui/states/EmptyState";
 
 export default function AvaliacaoListCard({
   titulo,
@@ -17,9 +19,12 @@ export default function AvaliacaoListCard({
       <h5 className="mb-3">{titulo}</h5>
 
       {carregando ? (
-        <div className="footboxd-muted">Carregando...</div>
+        <LoadingState message="Buscando avaliações..." />
       ) : itens.length === 0 ? (
-        <div className="footboxd-muted small">Nenhuma avaliação disponível.</div>
+        <EmptyState
+          title="Sem avaliações aqui"
+          message="Volte após adicionar suas primeiras avaliações para aparecer nesta lista."
+        />
       ) : (
         <ul className="list-group list-group-flush">
           {itens.map((item) => (

@@ -38,7 +38,6 @@ function addPlayers(
   list?: LineupPlayer[]
 ) {
   list?.forEach((p) => {
-    // Sempre usa player.number como chave, nunca player.id
     if (p.player.number !== null && p.player.number !== undefined) {
       jogadores[p.player.number] = {
         name: p.player.name,
@@ -64,7 +63,6 @@ export async function buscarInfoJogo(fixtureId: number): Promise<JogoInfo | null
 
       const jogadores: Record<number, { name: string; pos?: string; number?: number }> = {};
 
-      // Apenas adiciona os jogadores titulares (startXI), igual a JogoDetalhe
       for (const side of lineupRaw) {
         addPlayers(jogadores, side.startXI);
       }
@@ -77,7 +75,6 @@ export async function buscarInfoJogo(fixtureId: number): Promise<JogoInfo | null
 
         jogadores,
 
-        // Coach IDs devem ser 1 (casa) e 2 (fora) para consistência com JogoDetalhe
         coachCasa: { id: 1, name: lineupRaw[0]?.coach?.name || "Técnico" },
         coachFora: { id: 2, name: lineupRaw[1]?.coach?.name || "Técnico" },
       };

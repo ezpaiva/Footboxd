@@ -56,9 +56,15 @@ export async function buscarResultados() {
   if (cached) {
     return cached;
   }
-  const data = await fetchApi<IJogo>(`/fixtures?date=${formatDate(-1)}`);
-  saveToSessionCache(cacheKey, data);
-  return data;
+
+  try {
+    const data = await fetchApi<IJogo>(`/fixtures?date=${formatDate(-1)}`);
+    saveToSessionCache(cacheKey, data);
+    return data;
+  } catch (error) {
+    console.error("buscarResultados error:", error);
+    throw error;
+  }
 }
 
 export async function buscarAoVivo() {
@@ -67,9 +73,15 @@ export async function buscarAoVivo() {
   if (cached) {
     return cached;
   }
-  const data = await fetchApi<IJogo>(`/fixtures?live=all`);
-  saveToSessionCache(cacheKey, data);
-  return data;
+
+  try {
+    const data = await fetchApi<IJogo>(`/fixtures?live=all`);
+    saveToSessionCache(cacheKey, data);
+    return data;
+  } catch (error) {
+    console.error("buscarAoVivo error:", error);
+    throw error;
+  }
 }
 
 export async function buscarProximos() {
@@ -78,9 +90,15 @@ export async function buscarProximos() {
   if (cached) {
     return cached;
   }
-  const data = await fetchApi<IJogo>(`/fixtures?date=${formatDate(1)}`);
-  saveToSessionCache(cacheKey, data);
-  return data;
+
+  try {
+    const data = await fetchApi<IJogo>(`/fixtures?date=${formatDate(1)}`);
+    saveToSessionCache(cacheKey, data);
+    return data;
+  } catch (error) {
+    console.error("buscarProximos error:", error);
+    throw error;
+  }
 }
 
 export async function buscarLineup(fixtureId: number) {
@@ -89,9 +107,15 @@ export async function buscarLineup(fixtureId: number) {
   if (cached) {
     return cached;
   }
-  const data = await fetchApi<LineupTeam>(`/fixtures/lineups?fixture=${fixtureId}`);
-  saveToSessionCache(cacheKey, data);
-  return data;
+
+  try {
+    const data = await fetchApi<LineupTeam>(`/fixtures/lineups?fixture=${fixtureId}`);
+    saveToSessionCache(cacheKey, data);
+    return data;
+  } catch (error) {
+    console.error("buscarLineup error:", error);
+    throw error;
+  }
 }
 
 export async function buscarFixture(fixtureId: number) {
@@ -100,10 +124,16 @@ export async function buscarFixture(fixtureId: number) {
   if (cached) {
     return cached;
   }
-  const data = await fetchApi<IJogo>(`/fixtures?id=${fixtureId}`);
-  if (data.length > 0) {
-    saveToSessionCache(cacheKey, data[0]);
-    return data[0];
+
+  try {
+    const data = await fetchApi<IJogo>(`/fixtures?id=${fixtureId}`);
+    if (data.length > 0) {
+      saveToSessionCache(cacheKey, data[0]);
+      return data[0];
+    }
+    return null;
+  } catch (error) {
+    console.error("buscarFixture error:", error);
+    throw error;
   }
-  return null;
 }

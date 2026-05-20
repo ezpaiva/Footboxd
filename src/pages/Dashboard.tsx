@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../components/layout/Header";
 
 import { minhas, excluir } from "../services/avaliacoesService";
@@ -8,6 +8,8 @@ import { buscarInfoJogo, type JogoInfo } from "../utils/jogoInfo";
 import StatsCards from "../components/dashboard/StatsCards";
 import AvaliacaoListCard from "../components/dashboard/AvaliacaoListCard";
 import AvaliacaoTableCard from "../components/dashboard/AvaliacaoTableCard";
+import LoadingState from "../components/ui/states/LoadingState";
+import ErrorState from "../components/ui/states/ErrorState";
 
 import type { AvaliacaoResponse } from "../components/dashboard/Referencia";
 
@@ -16,38 +18,41 @@ export default function Dashboard() {
 
   const [avaliacoes, setAvaliacoes] = useState<AvaliacaoResponse[]>([]);
   const [carregando, setCarregando] = useState(true);
+  const [fetchErro, setFetchErro] = useState<string | null>(null);
   const [erro, setErro] = useState<string | null>(null);
 
   const [jogoInfoMap, setJogoInfoMap] = useState<Map<number, JogoInfo | null>>(
     () => new Map()
   );
 
-  useEffect(() => {
+  const carregarAvaliacoes = useCallback(async () => {
     const usuarioAtual = getUsuarioLogado();
     if (!usuarioAtual) return;
 
-    (async () => {
-      try {
-        setCarregando(true);
-        setErro(null);
+    setCarregando(true);
+    setFetchErro(null);
 
-        const data = await minhas();
-        setAvaliacoes(data);
+    try {
+      const data = await minhas();
+      setAvaliacoes(data);
 
-        const fixtureIds = [...new Set(data.map((a) => a.fixtureId))];
-        const entries = await Promise.all(
-          fixtureIds.map(async (fid) => [fid, await buscarInfoJogo(fid)] as const)
-        );
+      const fixtureIds = [...new Set(data.map((a) => a.fixtureId))];
+      const entries = await Promise.all(
+        fixtureIds.map(async (fid) => [fid, await buscarInfoJogo(fid)] as const)
+      );
 
-        setJogoInfoMap(new Map(entries));
-      } catch (e) {
-        console.error(e);
-        setErro("Falha ao carregar suas avaliações.");
-      } finally {
-        setCarregando(false);
-      }
-    })();
+      setJogoInfoMap(new Map(entries));
+    } catch (error) {
+      console.error("Dashboard fetch error:", error);
+      setFetchErro("Falha ao carregar suas avaliações.");
+    } finally {
+      setCarregando(false);
+    }
   }, []);
+
+  useEffect(() => {
+    carregarAvaliacoes();
+  }, [carregarAvaliacoes]);
 
   const jogosAvaliados = useMemo(
     () => new Set(avaliacoes.map((item) => item.fixtureId)).size,
@@ -80,6 +85,28 @@ export default function Dashboard() {
   }
 
   if (!usuario) return null;
+
+  if (carregando) {
+    return (
+      <>
+        <Header pageTitle="Histórico de Avaliações" />
+        <main className="page">
+          <LoadingState message="Carregando histórico de avaliações" />
+        </main>
+      </>
+    );
+  }
+
+  if (fetchErro) {
+    return (
+      <>
+        <Header pageTitle="Histórico de Avaliações" />
+        <main className="page">
+          <ErrorState message={fetchErro} onRetry={carregarAvaliacoes} />
+        </main>
+      </>
+    );
+  }
 
   return (
     <>

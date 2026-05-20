@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 
 import CardJogo from "../components/ui/CardJogo";
+import LoadingState from "../components/ui/states/LoadingState";
+import ErrorState from "../components/ui/states/ErrorState";
+import EmptyState from "../components/ui/states/EmptyState";
 import {
   buscarResultados,
   buscarAoVivo,
@@ -14,16 +17,38 @@ export default function Home() {
   const [resultados, setResultados] = useState<IJogo[]>([]);
   const [aoVivo, setAoVivo] = useState<IJogo[]>([]);
   const [proximos, setProximos] = useState<IJogo[]>([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
-    buscarResultados().then(setResultados);
-    buscarAoVivo().then(setAoVivo);
-    buscarProximos().then(setProximos);
+    async function carregarDados() {
+      setCarregando(true);
+      setErro(null);
+
+      try {
+        const [resultadosData, aoVivoData, proximosData] = await Promise.all([
+          buscarResultados(),
+          buscarAoVivo(),
+          buscarProximos(),
+        ]);
+
+        setResultados(resultadosData);
+        setAoVivo(aoVivoData);
+        setProximos(proximosData);
+      } catch (error) {
+        console.error("Home data error:", error);
+        setErro("Não foi possível carregar os dados iniciais.");
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarDados();
   }, []);
 
   const [abaAtiva, setAbaAtiva] = useState<"resultados" | "aoVivo" | "proximos">(
-  "resultados"
-);
+    "resultados"
+  );
 
   return (
     <>
@@ -111,35 +136,72 @@ export default function Home() {
         </div>
 
         <section className="mb-5">
-          <div className="row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
-            {abaAtiva === "resultados" &&
-              resultados.slice(0, 9).map((jogo) => (
-                <div key={jogo.fixture.id}>
-                  <CardJogo jogo={jogo} />
-                </div>
-              ))}
+          {carregando ? (
+            <LoadingState message="Carregando as seções iniciais" />
+          ) : erro ? (
+            <ErrorState
+              message={erro}
+              onRetry={() => {
+                setErro(null);
+                setCarregando(true);
+                Promise.all([buscarResultados(), buscarAoVivo(), buscarProximos()])
+                  .then(([resultadosData, aoVivoData, proximosData]) => {
+                    setResultados(resultadosData);
+                    setAoVivo(aoVivoData);
+                    setProximos(proximosData);
+                  })
+                  .catch((error) => {
+                    console.error("Home retry error:", error);
+                    setErro("Não foi possível carregar os dados iniciais.");
+                  })
+                  .finally(() => setCarregando(false));
+              }}
+            />
+          ) : (
+            <div className="row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
+              {abaAtiva === "resultados" &&
+                (resultados.length === 0 ? (
+                  <EmptyState
+                    title="Nenhum resultado encontrado"
+                    message="Não há resultados para exibir no momento."
+                  />
+                ) : (
+                  resultados.slice(0, 9).map((jogo) => (
+                    <div key={jogo.fixture.id}>
+                      <CardJogo jogo={jogo} />
+                    </div>
+                  ))
+                ))}
 
-            {abaAtiva === "aoVivo" &&
-              aoVivo.length === 0 && (
-                <p className="text-center text-light opacity-75">
-                  Nenhum jogo ao vivo no momento
-                </p>
-              )}
+              {abaAtiva === "aoVivo" &&
+                (aoVivo.length === 0 ? (
+                  <EmptyState
+                    title="Nenhum jogo ao vivo"
+                    message="Nenhuma partida ao vivo encontrada no momento."
+                  />
+                ) : (
+                  aoVivo.slice(0, 9).map((jogo) => (
+                    <div key={jogo.fixture.id}>
+                      <CardJogo jogo={jogo} />
+                    </div>
+                  ))
+                ))}
 
-            {abaAtiva === "aoVivo" &&
-              aoVivo.slice(0, 9).map((jogo) => (
-                <div key={jogo.fixture.id}>
-                  <CardJogo jogo={jogo} />
-                </div>
-              ))}
-
-            {abaAtiva === "proximos" &&
-              proximos.slice(0, 9).map((jogo) => (
-                <div key={jogo.fixture.id}>
-                  <CardJogo jogo={jogo} />
-                </div>
-              ))}
-          </div>
+              {abaAtiva === "proximos" &&
+                (proximos.length === 0 ? (
+                  <EmptyState
+                    title="Sem jogos futuros"
+                    message="Ainda não há próximos jogos para exibir."
+                  />
+                ) : (
+                  proximos.slice(0, 9).map((jogo) => (
+                    <div key={jogo.fixture.id}>
+                      <CardJogo jogo={jogo} />
+                    </div>
+                  ))
+                ))}
+            </div>
+          )}
         </section>
 
          <div className="text-center mb-5">

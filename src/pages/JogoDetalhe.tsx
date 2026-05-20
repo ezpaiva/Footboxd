@@ -4,6 +4,8 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 import CampoJogo from "../components/ui/CampoJogo";
 import ListaJogadores from "../components/ui/ListaJogadores";
+import LoadingState from "../components/ui/states/LoadingState";
+import ErrorState from "../components/ui/states/ErrorState";
 
 import { buscarLineup } from "../services/apiFootball";
 import { listarPorFixture, salvarEmLote } from "../services/avaliacoesService";
@@ -30,64 +32,94 @@ export default function JogoDetalhe() {
   const [coachFora, setCoachFora] = useState("");
   const [avaliacoes, setAvaliacoes] = useState<Record<string, NotaJogador>>({});
   const [salvando, setSalvando] = useState(false);
+  const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
 
-  useEffect(() => {
+  async function carregarDados() {
     if (!fixtureId) return;
 
-    async function carregarDados() {
-      try {
-        const data = await buscarLineup(Number(fixtureId));
-        if (!data || data.length < 2) return;
+    setCarregando(true);
+    setErro(null);
 
-        const casaPlayers = data[0].startXI.map((p) => p.player);
-        const foraPlayers = data[1].startXI.map((p) => p.player);
-        const coachCasaName = data[0].coach?.name || "Treinador";
-        const coachForaName = data[1].coach?.name || "Treinador";
-
-        setCasa(casaPlayers);
-        setFora(foraPlayers);
-        setCoachCasa(coachCasaName);
-        setCoachFora(coachForaName);
-
-        const response = await listarPorFixture(Number(fixtureId));
-        const map: Record<string, NotaJogador> = {};
-
-        const playerSide = new Map<number, "home" | "away">();
-        casaPlayers.forEach((player) => playerSide.set(player.number, "home"));
-        foraPlayers.forEach((player) => playerSide.set(player.number, "away"));
-
-        response.forEach((item) => {
-          if (item.tipo === "JOGADOR") {
-            const lado = playerSide.get(item.referenciaId) ?? "home";
-            const key = `${lado}-${item.referenciaId}`;
-            const player = casaPlayers.concat(foraPlayers).find((p) => p.number === item.referenciaId);
-            map[key] = {
-              nome: player?.name ?? `Jogador #${item.referenciaId}`,
-              nota: item.nota,
-              lado,
-            };
-          }
-
-          if (item.tipo === "TECNICO") {
-            const key = item.referenciaId === 2 ? "coach-away" : "coach-home";
-            map[key] = {
-              nome: item.referenciaId === 2 ? coachForaName : coachCasaName,
-              nota: item.nota,
-              lado: item.referenciaId === 2 ? "away" : "home",
-            };
-          }
-        });
-
-        setAvaliacoes(map);
-      } catch (err) {
-        console.error(err);
-        setErro("Falha ao carregar os dados do jogo ou avaliações existentes.");
+    try {
+      const data = await buscarLineup(Number(fixtureId));
+      if (!data || data.length < 2) {
+        throw new Error("Dados de lineup incompletos");
       }
-    }
 
+      const casaPlayers = data[0].startXI.map((p) => p.player);
+      const foraPlayers = data[1].startXI.map((p) => p.player);
+      const coachCasaName = data[0].coach?.name || "Treinador";
+      const coachForaName = data[1].coach?.name || "Treinador";
+
+      setCasa(casaPlayers);
+      setFora(foraPlayers);
+      setCoachCasa(coachCasaName);
+      setCoachFora(coachForaName);
+
+      const response = await listarPorFixture(Number(fixtureId));
+      const map: Record<string, NotaJogador> = {};
+
+      const playerSide = new Map<number, "home" | "away">();
+      casaPlayers.forEach((player) => playerSide.set(player.number, "home"));
+      foraPlayers.forEach((player) => playerSide.set(player.number, "away"));
+
+      response.forEach((item) => {
+        if (item.tipo === "JOGADOR") {
+          const lado = playerSide.get(item.referenciaId) ?? "home";
+          const key = `${lado}-${item.referenciaId}`;
+          const player = casaPlayers.concat(foraPlayers).find((p) => p.number === item.referenciaId);
+          map[key] = {
+            nome: player?.name ?? `Jogador #${item.referenciaId}`,
+            nota: item.nota,
+            lado,
+          };
+        }
+
+        if (item.tipo === "TECNICO") {
+          const key = item.referenciaId === 2 ? "coach-away" : "coach-home";
+          map[key] = {
+            nome: item.referenciaId === 2 ? coachForaName : coachCasaName,
+            nota: item.nota,
+            lado: item.referenciaId === 2 ? "away" : "home",
+          };
+        }
+      });
+
+      setAvaliacoes(map);
+    } catch (err) {
+      console.error("JogoDetalhe error:", err);
+      setErro("Falha ao carregar os dados do jogo ou avaliações existentes.");
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  useEffect(() => {
     carregarDados();
   }, [fixtureId]);
+
+  if (carregando) {
+    return (
+      <>
+        <Header pageTitle="Detalhes do Jogo" />
+        <main className="container-fluid py-5">
+          <LoadingState message="Carregando detalhes do jogo" />
+        </main>
+      </>
+    );
+  }
+
+  if (erro) {
+    return (
+      <>
+        <Header pageTitle="Detalhes do Jogo" />
+        <main className="container-fluid py-5">
+          <ErrorState message={erro} onRetry={carregarDados} />
+        </main>
+      </>
+    );
+  }
 
   if (!jogo) return null;
 
