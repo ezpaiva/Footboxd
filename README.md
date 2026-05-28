@@ -151,13 +151,41 @@ Observações importantes:
 
 ## Como executar o projeto
 
-Instale as dependências:
-
 npm install
-
-Execute o projeto:
-
 npm run dev
+
+## Como rodar o projeto com back end
+
+1. **Clone ou baixe este repositório.**
+
+2. **Configure as variáveis de ambiente:**
+  - Crie um arquivo `.env` na raiz do projeto, se ainda não existir.
+  - Defina a URL do back end (exemplo para ambiente local):
+    ```env
+    VITE_API_URL=http://localhost:8080
+    VITE_API_FOOTBALL_KEY=sua_chave_aqui
+    ```
+  - Certifique-se de que o back end esteja rodando na porta e endereço definidos acima.
+
+3. **Instale as dependências do front end:**
+  ```bash
+  npm install
+  ```
+
+4. **Inicie o back end:**
+  - Certifique-se de possuir um back end compatível (Node.js, Java, etc.) rodando em `http://localhost:8080`.
+  - Siga as instruções do seu back end para instalar dependências e iniciar o servidor.
+
+5. **Inicie o front end:**
+  ```bash
+  npm run dev
+  ```
+  O front end estará disponível normalmente em `http://localhost:5173` (ou porta informada pelo Vite).
+
+---
+Se desejar alterar a URL do back end, basta modificar a variável `VITE_API_URL` no arquivo `.env`.
+
+---
 
 ## Funcionalidades
 

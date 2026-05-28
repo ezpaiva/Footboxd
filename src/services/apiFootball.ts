@@ -1,7 +1,9 @@
 import type { IJogo } from "../types/game";
 import type { IJogador } from "../types/player";
+import { apiFetch } from "./api";
 
-const API_URL = "https://v3.football.api-sports.io";
+const BACKEND_URL = import.meta.env.VITE_API_URL;
+const LEGACY_API_URL = "https://v3.football.api-sports.io";
 
 const HEADERS = {
   "x-apisports-key": import.meta.env.VITE_API_FOOTBALL_KEY,
@@ -20,6 +22,8 @@ export interface LineupTeam {
   };
 }
 
+type ApiFootballBody<T> = ApiFootballResponse<T[]> | T[] | ApiFootballResponse<T>;
+
 function getFromSessionCache<T>(key: string): T | null {
   const cached = sessionStorage.getItem(key);
   return cached ? (JSON.parse(cached) as T) : null;
@@ -35,19 +39,45 @@ function formatDate(offset: number) {
   return date.toISOString().split("T")[0];
 }
 
+function normalizeApiResponse<T>(body: unknown): T[] {
+  if (Array.isArray(body)) {
+    return body as T[];
+  }
+
+  if (body && typeof body === "object" && "response" in body) {
+    const response = (body as ApiFootballResponse<T[]>).response;
+    if (Array.isArray(response)) {
+      return response;
+    }
+    if (response === null || response === undefined) {
+      return [];
+    }
+    return [response] as T[];
+  }
+
+  throw new Error("Formato de resposta inesperado da API de futebol");
+}
+
 async function fetchApi<T>(endpoint: string): Promise<T[]> {
-  const res = await fetch(`${API_URL}${endpoint}`, {
+  if (BACKEND_URL?.trim()) {
+    const body = await apiFetch<ApiFootballBody<T>>(endpoint, { method: "GET" });
+    return normalizeApiResponse<T>(body);
+  }
+
+  if (!HEADERS["x-apisports-key"]) {
+    throw new Error("Chave da API-Football não configurada (VITE_API_FOOTBALL_KEY)");
+  }
+
+  const res = await fetch(`${LEGACY_API_URL}${endpoint}`, {
     headers: HEADERS,
   });
 
-  const data = (await res.json()) as ApiFootballResponse<T[]>;
-  console.log("API RESPONSE:", data);
-
-  if (!res.ok || !Array.isArray(data.response)) {
-    throw new Error("Erro ao acessar dados da API‑Football");
+  const body = await res.json();
+  if (!res.ok) {
+    throw new Error("Erro ao acessar dados da API-Football");
   }
 
-  return data.response;
+  return normalizeApiResponse<T>(body);
 }
 
 export async function buscarResultados() {
